@@ -18,6 +18,7 @@ public:
 	double d;
 	double rd;
 	double n;
+	double r_a;
 	int funcType;
 	std::vector<std::vector<double> > dVal;
 	virtual double intersect(ray& ray, glm::dvec3& normal) = 0;

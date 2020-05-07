@@ -24,8 +24,10 @@ int main()
 {
 
 	Scene* scene = new Scene();
-
 	//loadOBJ("./Models/Monkey.obj", scene);
+
+	double f0;
+	std::vector<double> v1;
 
 	sphere* sphere1 = new sphere();
 	sphere1->center = glm::dvec3(1.5, 0,0);	
@@ -33,28 +35,51 @@ int main()
 	sphere1->diffuse = glm::dvec3(0.721, 0.450, 0.2);
 	sphere1->specular = glm::dvec3(0.721, 0.450, 0.2);
 	sphere1->n = 0.63660;
-	sphere1->s = 0.1;
-	sphere1->d = 0.9;
-	std::vector<double> v1;
+	sphere1->s = 1.0;
+	sphere1->d = 0.0;
+
+	v1.clear();
 	v1.push_back(0.4);
 	v1.push_back(0.4);
 	sphere1->dVal.push_back(v1);
 	v1[0] = 0.2;
 	v1[1] = 0.6;
 	sphere1->dVal.push_back(v1);
-	sphere1->funcType = 1;
-	double f0=pow((sphere1->n-1)/(sphere1->n+1),2);
+
+	sphere1->funcType = 2;
+	f0=pow((sphere1->n-1)/(sphere1->n+1),2);
 	sphere1->rd = f0 / 3.14159;
+	sphere1->r_a = 3.14159*sphere1->rd;
 	std::cout << sphere1->rd << "\n";
-	scene->add(sphere1);
+	//scene->add(sphere1);
+
+	sphere* sphere2 = new sphere();
+	sphere2->center = glm::dvec3(1.5, 0, 0);
+	sphere2->radius = 2;
+	sphere2->diffuse = glm::dvec3(0.180, 0.160, 0.227);
+	sphere2->specular = glm::dvec3(0.180, 0.160, 0.227);
+	sphere2->n = 1.45;
+	sphere2->s = 0.8;
+	sphere2->d = 0.2;
+
+	v1.clear();
+	v1.push_back(0.15);
+	v1.push_back(1.0);
+	sphere2->dVal.push_back(v1);
+
+	sphere2->funcType = 1;
+	f0 = pow((sphere1->n - 1) / (sphere1->n + 1), 2);
+	sphere2->rd = f0 / 3.14159;
+	sphere2->r_a = 3.14159 * sphere1->rd;
+	std::cout << sphere2->rd << "\n";
+	scene->add(sphere2);
 
 	light* light1 = new light();
 	light1->attenuation = glm::dvec3(1, 0, 0);
 	light1->source = glm::dvec3(-4, 0, 0);
 	light1->type = 1;
 	light1->color = glm::dvec3(1, 1, 0.9843);
-	light1->intensity = 5000.0;
-	light1->intensityAmb = 0.01 * light1->intensity;
+	light1->power = 5000.0;
 	light1->solidAngle = 0.001;
 	scene->add(light1);
 
@@ -63,10 +88,11 @@ int main()
 	light2->source = glm::dvec3(-1, -1, -1);
 	light2->type = 1;
 	light2->color = glm::dvec3(1, 1, 0.9843);
-	light2->intensity = 5000.0;
-	light2->intensityAmb = 0.01 * light2->intensity;
+	light2->power = 5000.0;
 	light2->solidAngle = 0.001;
 	scene->add(light2);
+
+	scene->calcAmbientIntensity();
 	//scene->add(light2);
 
 	/*sphere* sphere2 = new sphere();

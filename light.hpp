@@ -10,8 +10,7 @@ public:
 	glm::dvec3 attenuation;
 	glm::dvec3 color;
 	double solidAngle;
-	double intensity;
-	double intensityAmb;
+	double power;
 };
 
 #endif // !LIGHT_HPP

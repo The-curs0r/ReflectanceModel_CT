@@ -9,11 +9,13 @@
 
 
 #define epsilon pow(10,-12)
+#define pi 3.14159
 
 class Scene {
 public:
 	std::vector<object*> objects;
 	std::vector<light*> lights;
+	double ambientIntensity;
 
 	void add(object* object) {
 		objects.push_back(object);
@@ -21,6 +23,14 @@ public:
 
 	void add(light* light) {
 		lights.push_back(light);
+	}
+
+	void calcAmbientIntensity() {
+		std::vector<light*>::iterator lightIterator = lights.begin();
+		for (lightIterator = lights.begin(); lightIterator != lights.end(); lightIterator++) {
+			ambientIntensity += (0.0005)*(*lightIterator)->power;
+		}
+		ambientIntensity /= lights.size();
 	}
 
 	bool checkvis(glm::dvec3 target, glm::dvec3 source) {
@@ -82,51 +92,61 @@ public:
 		}
 		if (int_object != nullptr)
 		{
-			std::vector<light*>::iterator lightIterator = lights.begin();
 
-			outColor = glm::dvec3(0, 0, 0);
+			outColor = (ambientIntensity) * ((int_object)->r_a) * (int_object->diffuse);
+
+			std::vector<light*>::iterator lightIterator = lights.begin();
 
 			for (lightIterator = lights.begin(); lightIterator != lights.end(); lightIterator++)
 			{
+
 				glm::dvec3 source = (*lightIterator)->source;
 				if ((*lightIterator)->type == 0) source = int_point - source;        //Directional light
 
 				if (checkvis(int_point, source)) {
+					
 					//COLOR OBJECT AS IT IS VISIBLE
 					glm::dvec3 L = source - int_point;
-
-					int count = 0;
-
 					if ((*lightIterator)->type == 0) L = (*lightIterator)->source;        //Directional light
+
+					double lightDis = glm::dot(L, L);
+					double intensity = (*lightIterator)->power;// Dont divide by area, consider constant intensity (4 * pi * pow(lightDis, 2));
+
 					L = glm::normalize(L);
 					glm::dvec3 H = glm::normalize(-rayIn.direction + L);
-					
-					if (outColor == glm::dvec3(0, 0, 0))
-						outColor += int_object->rd * (int_object->diffuse) * ((*lightIterator)->intensityAmb) * (3.1415) * (0.045);
-					//if (glm::dot(int_normal, L) > 0)
+				
+					if (glm::dot(int_normal, L) > 0)
 					{
-						outColor += (((int_object)->diffuse ) * (*lightIterator)->intensity) * (((*lightIterator)->solidAngle)) * glm::dot(normal, L) * (int_object->rd) * (int_object->d) *(25.0);
-						
+						outColor += int_object->diffuse * intensity * glm::dot(normal, L) * (*lightIterator)->solidAngle * (int_object->rd) * (int_object->d)*15.0;
 					}
-					//if (glm::dot(int_normal, H))
+					if (glm::dot(int_normal, H))
 					{
-						double dMul = 0;//Wrtie specular component
+						double dMul = 0;
 						for (int i = 0;i < int_object->dVal.size();i++)
 						{
-							dMul += (int_object->dVal[i][1] * (exp (-pow((glm::tan(glm::acos(glm::dot(int_normal, H))))/ int_object->dVal[i][0], 2)) / (pow(int_object->dVal[i][0],2)*pow(glm::dot(int_normal,H),4))));
+							if(int_object->funcType==1)
+								dMul += (int_object->dVal[i][1] * (exp (-pow((glm::tan(glm::acos(glm::dot(int_normal, H))))/ int_object->dVal[i][0], 2)) / (pow(int_object->dVal[i][0],2)*pow(glm::dot(int_normal,H),4))));
+							if (int_object->funcType == 2)
+								dMul += 10 * int_object->dVal[i][1] * exp(-pow(glm::acos(glm::dot(int_normal, H)) / int_object->dVal[i][0],2));
 						}
 						//std::cout << "\n";
 						double G0 = std::min(1.0, (2 * glm::dot(int_normal, H) * glm::dot(int_normal, -rayIn.direction) / glm::dot(-rayIn.direction, H)));
 						double G = std::min(G0, (2 * glm::dot(int_normal, H) * glm::dot(int_normal, L) / glm::dot(-rayIn.direction, H)));
-						double costheta = glm::dot(H, L);
-						double sintheta2 = 1 - costheta * costheta;
-						double R1 = pow((int_object->n * costheta - glm::sqrt(1 - int_object->n * int_object->n * sintheta2) ) / (int_object->n * costheta + glm::sqrt(1 - int_object->n * int_object->n * sintheta2)), 2);
-						double R2 = pow((int_object->n * glm::sqrt(1 - int_object->n * int_object->n * sintheta2) - costheta ) / (int_object->n * glm::sqrt(1 - int_object->n * int_object->n * sintheta2) + costheta ),2);
-						double F = (R1 + R2) / 2.0;
+
+						//double sintheta2 = 1 - costheta * costheta;
+						//double R1 = pow((int_object->n * costheta - glm::sqrt(1 - int_object->n * int_object->n * sintheta2) ) / (int_object->n * costheta + glm::sqrt(1 - int_object->n * int_object->n * sintheta2)), 2);
+						//double R2 = pow((int_object->n * glm::sqrt(1 - int_object->n * int_object->n * sintheta2) - costheta ) / (int_object->n * glm::sqrt(1 - int_object->n * int_object->n * sintheta2) + costheta ),2);
+
+						double c = glm::dot(H, L);
+						double g=glm::sqrt(pow(int_object->n,2)+c*c-1);
+
+						double R1 = pow((g-c)/(g+c),2);
+						double R2 = 1 + pow((c*(g+c)-1)/(c * (g - c) + 1),2);
+						double F = (R1 * R2) / 2.0;
 						//std::cout << R1 << " " << R2 << " " << F << "\n";
 						double rs = F * dMul * G / ((3.14159) * (glm::dot(int_normal, L)) * glm::dot(int_normal, -rayIn.direction));
 						
-						outColor += (((int_object)->specular) * (((*lightIterator)->solidAngle)*((*lightIterator)->intensity)) * glm::dot(int_normal, L) * (rs) * (int_object->s));
+						outColor += int_object->specular * (*lightIterator)->solidAngle*intensity * glm::dot(int_normal, L) * rs * int_object->s * 2.0;
 					}
 				//std::cout << outColor[0] << " " << outColor[1] << " " << outColor[2] << "\n";
 				}
