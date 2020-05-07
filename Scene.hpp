@@ -117,7 +117,7 @@ public:
 				
 					if (glm::dot(int_normal, L) > 0)
 					{
-						outColor += int_object->diffuse * intensity * glm::dot(normal, L) * (*lightIterator)->solidAngle * (int_object->rd) * (int_object->d)*15.0;
+						outColor += int_object->diffuse * intensity * glm::dot(normal, L) * (*lightIterator)->solidAngle * (int_object->rd) * (int_object->d)*1.0;
 					}
 					if (glm::dot(int_normal, H))
 					{
@@ -146,7 +146,7 @@ public:
 						//std::cout << R1 << " " << R2 << " " << F << "\n";
 						double rs = F * dMul * G / ((3.14159) * (glm::dot(int_normal, L)) * glm::dot(int_normal, -rayIn.direction));
 						
-						outColor += int_object->specular * (*lightIterator)->solidAngle*intensity * glm::dot(int_normal, L) * rs * int_object->s * 2.0;
+						outColor += int_object->specular * (*lightIterator)->solidAngle*intensity * glm::dot(int_normal, L) * rs * int_object->s * 1.0;
 					}
 				//std::cout << outColor[0] << " " << outColor[1] << " " << outColor[2] << "\n";
 				}

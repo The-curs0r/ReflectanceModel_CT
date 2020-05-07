@@ -11,7 +11,6 @@ public:
 	glm::dvec3 color;
 	double solidAngle;
 	double power;
-	//HALOO
 };
 
 #endif // !LIGHT_HPP
