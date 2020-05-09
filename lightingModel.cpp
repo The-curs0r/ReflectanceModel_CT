@@ -48,6 +48,6 @@ void lightObject(light lightDetails, glm::dvec3 int_point, glm::dvec3 int_normal
 		}
 	}
 	if (modelType == 2) {
-		//Write code for phong model
+		//Copy code for phong model to this file
 	}
 }

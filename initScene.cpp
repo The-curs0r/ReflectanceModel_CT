@@ -36,17 +36,13 @@ void init(Scene* scene, int sceneId) {
 		scene->add(copperBall);
 
 		light* light1 = new light();
-		light1->attenuation = glm::dvec3(1, 0, 0);
 		light1->source = glm::dvec3(-4, 0, 0);
-		light1->color = glm::dvec3(1, 1, 0.9843);
 		light1->power = 3000.0;
 		light1->solidAngle = 0.001;
 		scene->add(light1);
 
 		light* light2 = new light();
-		light2->attenuation = glm::dvec3(1, 0, 0);
 		light2->source = glm::dvec3(-1, -1, -1);
-		light2->color = glm::dvec3(1, 1, 0.9843);
 		light2->power = 3000.0;
 		light2->solidAngle = 0.001;
 		scene->add(light2);
@@ -78,17 +74,13 @@ void init(Scene* scene, int sceneId) {
 		scene->add(redRubberBall);
 
 		light* light1 = new light();
-		light1->attenuation = glm::dvec3(1, 0, 0);
 		light1->source = glm::dvec3(-4, 0, 0);
-		light1->color = glm::dvec3(1, 1, 0.9843);
 		light1->power = 3000.0;
 		light1->solidAngle = 0.001;
 		scene->add(light1);
 
 		light* light2 = new light();
-		light2->attenuation = glm::dvec3(1, 0, 0);
 		light2->source = glm::dvec3(-1, -1, -1);
-		light2->color = glm::dvec3(1, 1, 0.9843);
 		light2->power = 3000.0;
 		light2->solidAngle = 0.001;
 		scene->add(light2);
@@ -118,24 +110,20 @@ void init(Scene* scene, int sceneId) {
 		scene->add(rustBall);
 
 		light* light1 = new light();
-		light1->attenuation = glm::dvec3(1, 0, 0);
 		light1->source = glm::dvec3(-4, 0, 0);
-		light1->color = glm::dvec3(1, 1, 0.9843);
 		light1->power = 3000.0;
 		light1->solidAngle = 0.001;
 		scene->add(light1);
 
 		light* light2 = new light();
-		light2->attenuation = glm::dvec3(1, 0, 0);
 		light2->source = glm::dvec3(-1, -1, -1);
-		light2->color = glm::dvec3(1, 1, 0.9843);
 		light2->power = 3000.0;
 		light2->solidAngle = 0.001;
 		scene->add(light2);
 
 		scene->calcAmbientIntensity();
 	}
-	/*else if (sceneId == 4) {
+	else if (sceneId == 4) {
 		sphere* obsidianBall = new sphere();
 		obsidianBall->center = glm::dvec3(1.5, 0, 0);
 		obsidianBall->radius = 2;
@@ -158,21 +146,17 @@ void init(Scene* scene, int sceneId) {
 		scene->add(obsidianBall);
 
 		light* light1 = new light();
-		light1->attenuation = glm::dvec3(1, 0, 0);
 		light1->source = glm::dvec3(-4, 0, 0);
-		light1->color = glm::dvec3(1, 1, 0.9843);
 		light1->power = 3000.0;
 		light1->solidAngle = 0.001;
 		scene->add(light1);
 
 		light* light2 = new light();
-		light2->attenuation = glm::dvec3(1, 0, 0);
 		light2->source = glm::dvec3(-1, -1, -1);
-		light2->color = glm::dvec3(1, 1, 0.9843);
 		light2->power = 3000.0;
 		light2->solidAngle = 0.001;
 		scene->add(light2);
 
 		scene->calcAmbientIntensity();
-	}*/
+	}
 }

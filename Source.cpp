@@ -26,7 +26,7 @@ int main()
 {
 
 	Scene* scene = new Scene();
-	init(scene, 1);
+	init(scene, 4);
 
 	//SSAA Setup
 	double jitterMatrix[5 * 2] = {
