@@ -6,7 +6,7 @@
 #include "light.hpp"
 #include <algorithm>
 #include <vector>
-
+#include "lightingModel.hpp"
 
 #define epsilon pow(10,-12)
 #define pi 3.14159
@@ -99,68 +99,10 @@ public:
 
 			for (lightIterator = lights.begin(); lightIterator != lights.end(); lightIterator++)
 			{
-
-				glm::dvec3 source = (*lightIterator)->source;
-				if ((*lightIterator)->type == 0) source = int_point - source;        //Directional light
-
-				if (checkvis(int_point, source)) {
-					
-					//COLOR OBJECT AS IT IS VISIBLE
-					glm::dvec3 L = source - int_point;
-					if ((*lightIterator)->type == 0) L = (*lightIterator)->source;        //Directional light
-
-					double lightDis = glm::dot(L, L);
-					double intensity = (*lightIterator)->power;// Dont divide by area, consider constant intensity (4 * pi * pow(lightDis, 2));
-
-					L = glm::normalize(L);
-					glm::dvec3 H = glm::normalize(-rayIn.direction + L);
-				
-					if (glm::dot(int_normal, L) > 0)
-					{
-						outColor += int_object->diffuse * intensity * glm::dot(normal, L) * (*lightIterator)->solidAngle * (int_object->rd) * (int_object->d)*1.0;
-					}
-					if (glm::dot(int_normal, H))
-					{
-						double dMul = 0;
-						for (int i = 0;i < int_object->dVal.size();i++)
-						{
-							if(int_object->funcType==1)
-								dMul += (int_object->dVal[i][1] * (exp (-pow((glm::tan(glm::acos(glm::dot(int_normal, H))))/ int_object->dVal[i][0], 2)) / (pow(int_object->dVal[i][0],2)*pow(glm::dot(int_normal,H),4))));
-							if (int_object->funcType == 2)
-								dMul += 10 * int_object->dVal[i][1] * exp(-pow(glm::acos(glm::dot(int_normal, H)) / int_object->dVal[i][0],2));
-						}
-						//std::cout << "\n";
-						double G0 = std::min(1.0, (2 * glm::dot(int_normal, H) * glm::dot(int_normal, -rayIn.direction) / glm::dot(-rayIn.direction, H)));
-						double G = std::min(G0, (2 * glm::dot(int_normal, H) * glm::dot(int_normal, L) / glm::dot(-rayIn.direction, H)));
-
-						//double sintheta2 = 1 - costheta * costheta;
-						//double R1 = pow((int_object->n * costheta - glm::sqrt(1 - int_object->n * int_object->n * sintheta2) ) / (int_object->n * costheta + glm::sqrt(1 - int_object->n * int_object->n * sintheta2)), 2);
-						//double R2 = pow((int_object->n * glm::sqrt(1 - int_object->n * int_object->n * sintheta2) - costheta ) / (int_object->n * glm::sqrt(1 - int_object->n * int_object->n * sintheta2) + costheta ),2);
-
-						double c = glm::dot(H, L);
-						double g=glm::sqrt(pow(int_object->n,2)+c*c-1);
-
-						double R1 = pow((g-c)/(g+c),2);
-						double R2 = 1 + pow((c*(g+c)-1)/(c * (g - c) + 1),2);
-						double F = (R1 * R2) / 2.0;
-						//std::cout << R1 << " " << R2 << " " << F << "\n";
-						double rs = F * dMul * G / ((3.14159) * (glm::dot(int_normal, L)) * glm::dot(int_normal, -rayIn.direction));
-						
-						outColor += int_object->specular * (*lightIterator)->solidAngle*intensity * glm::dot(int_normal, L) * rs * int_object->s * 1.0;
-					}
-				//std::cout << outColor[0] << " " << outColor[1] << " " << outColor[2] << "\n";
+				if (checkvis(int_point, (*lightIterator)->source)) {
+					lightObject(**lightIterator,int_point,int_normal,int_object,rayIn,outColor,1);
 				}
 			}
-
-			rayIn.direction = glm::normalize(rayIn.direction);
-			int_normal = glm::normalize(int_normal);
-
-			/*ray* reflected = new ray();
-			reflected->direction = rayIn.direction - (2 * glm::dot(rayIn.direction, int_normal)) * int_normal;
-			reflected->origin = int_point;
-			outColor += ((int_object->reflectivity) * intersectray(*reflected, depth - 1));
-			delete reflected;*/
-
 		}
 		return outColor;
 	}

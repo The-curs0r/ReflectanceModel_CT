@@ -18,6 +18,12 @@
     <ClCompile Include="Source.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="initScene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lightingModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ray.hpp">
@@ -33,6 +39,12 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="light.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="initScene.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="lightingModel.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

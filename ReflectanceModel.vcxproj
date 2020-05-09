@@ -114,6 +114,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <OpenMPSupport>true</OpenMPSupport>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -139,10 +140,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="initScene.cpp" />
+    <ClCompile Include="lightingModel.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="initScene.hpp" />
     <ClInclude Include="light.hpp" />
+    <ClInclude Include="lightingModel.hpp" />
     <ClInclude Include="object.hpp" />
     <ClInclude Include="progressbar.hpp" />
     <ClInclude Include="ray.hpp" />

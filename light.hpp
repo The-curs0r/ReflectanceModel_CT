@@ -6,7 +6,6 @@
 class light {
 public:
 	glm::dvec3 source;
-	int type;
 	glm::dvec3 attenuation;
 	glm::dvec3 color;
 	double solidAngle;
