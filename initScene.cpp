@@ -1,16 +1,51 @@
+/*
+	* File:    lightingmodel.hpp
+	*
+	* Author1:  Akshay Tiwari (2018A7PS0201H)
+	*
+	* Author2:  Mushkan Surekha  (2018B5A70477H)
+	*
+	* Author3:  Mahesh Swaminathan  (2018A4PS0982H)
+	*
+	* Date:     10-05-2020
+	*
+	* Course:   Computer Graphics (IS F311)
+	*
+	* Summary of File:
+	*
+	*  File containing some predefined scenes.
+*/
 #include <iostream>
 #include <stdio.h>
 #include <vector>
-
 #include "light.hpp"
 #include "scene.hpp"
 #include "object.hpp"
 #include "lightingModel.hpp"
-
+/**
+	*   void init(Scene* scene, int sceneId)
+	*
+	*   Summary of init() function:
+	*
+	*       Initializes the scene to one of the predefined scenes.
+	*
+	*   Parameters  :
+	*
+	*       Scene* scene: Pointer to scene variable
+	*		int sceneId: Variable to identify which scene to load
+	*
+	*   Return Value :
+	*
+	*       None
+	*
+	*   Description :
+	*
+	*       Loads the scene corresponding to given sceneId.
+	*/
 void init(Scene* scene, int sceneId) {
 	
-	double f0;
-	std::vector<double> v1;
+	double f0;///<Temporary variable
+	std::vector<double> v1;///<Temporary variable
 
 	if (sceneId == 1) {
 		sphere* copperBall = new sphere();
@@ -21,6 +56,7 @@ void init(Scene* scene, int sceneId) {
 		copperBall->n = 0.63660;
 		copperBall->s = 1.0;
 		copperBall->d = 0.0;
+		copperBall->shininess = 27.0;
 		v1.clear();
 		v1.push_back(0.4);
 		v1.push_back(0.4);
@@ -60,6 +96,7 @@ void init(Scene* scene, int sceneId) {
 		redRubberBall->n = 2.42;
 		redRubberBall->s = 0.4;
 		redRubberBall->d = 0.6;
+		redRubberBall->shininess = 5.0;
 
 		v1.clear();
 		v1.push_back(0.30);
@@ -96,6 +133,7 @@ void init(Scene* scene, int sceneId) {
 		rustBall->n = 2.42;
 		rustBall->s = 0.2;
 		rustBall->d = 0.8;
+		rustBall->shininess = 5.0;
 
 		v1.clear();
 		v1.push_back(0.35);
@@ -132,6 +170,7 @@ void init(Scene* scene, int sceneId) {
 		obsidianBall->n = 1.45;
 		obsidianBall->s = 0.8;
 		obsidianBall->d = 0.2;
+		obsidianBall->shininess = 5.0;
 
 		v1.clear();
 		v1.push_back(0.15);

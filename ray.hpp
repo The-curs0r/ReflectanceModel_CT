@@ -1,3 +1,21 @@
+/*
+	* File:    ray.hpp
+	*
+	* Author1:  Akshay Tiwari (2018A7PS0201H)
+	*
+	* Author2:  Mushkan Surekha  (2018B5A70477H)
+	*
+	* Author3:  Mahesh Swaminathan  (2018A4PS0982H)
+	*
+	* Date:     10-05-2020
+	*
+	* Course:   Computer Graphics (IS F311)
+	*
+	* Summary of File:
+	*
+	*   File containing ray class and all its respective methods.
+	*	Has the main code for passing a ray thorugh pixel i and j.
+*/
 #ifndef RAY_HPP
 #define RAY_HPP
 
@@ -5,9 +23,31 @@
 
 class ray {
 public:
-	glm::dvec3 origin;
-	glm::dvec3 direction;
-
+	glm::dvec3 origin;///<Ray origin
+	glm::dvec3 direction;///<Ray Direction
+	/**
+	*   void raythrough(double cam[], double i, double j, double width, double height)
+	*
+	*   Summary of raythrough() function:
+	*
+	*       Passes a ray through pixel i and j, given the details about camera and aspect
+	*
+	*   Parameters  :
+	*
+	*       double cam[] : Camera 
+	*		double i :	Row number
+	*		double j :	Column number
+	*		double width : Width of the image
+	*		double height : Height of the image
+	*
+	*   Return Value :
+	*
+	*       None
+	*
+	*   Description :
+	*
+	*       Sets the ray origin and direction corresponding to the given details about camera and aspect.
+	*/
 	void raythrough(double cam[], double i, double j, double width, double height) {
 
 		//Camera is vec3:looking_from vec3:looking_at vec3:up_vector double:fovy
